@@ -1,0 +1,2349 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050816">
+<title>RoboSpark Academy | Future Starts Here</title>
+
+<meta name="description" content="Explore robotics, coding, artificial intelligence, and future technology at RoboSpark Academy.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- 3D Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+:root {
+    --bg: #050816;
+    --bg2: #0a1026;
+    --cyan: #00f5ff;
+    --purple: #8b5cf6;
+    --white: #f5f7ff;
+    --muted: #a4aecb;
+    --border: rgba(255,255,255,.12);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button, input, textarea {
+    font: inherit;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+    background: var(--cyan);
+    color: #050816;
+}
+
+/* Scroll progress */
+
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    z-index: 2000;
+}
+
+/* Background video */
+
+#background-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+    opacity: .19;
+    pointer-events: none;
+}
+
+.video-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(5,8,22,.55), rgba(5,8,22,.88)),
+        radial-gradient(circle at 75% 25%, rgba(0,245,255,.08), transparent 35%);
+}
+
+/* Background effects */
+
+.ambient {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: .16;
+    pointer-events: none;
+    z-index: -1;
+    animation: ambientMove 12s ease-in-out infinite alternate;
+}
+
+.ambient.one {
+    top: 5%;
+    left: -180px;
+    background: var(--cyan);
+}
+
+.ambient.two {
+    right: -180px;
+    top: 45%;
+    background: var(--purple);
+    animation-delay: -4s;
+}
+
+@keyframes ambientMove {
+    from { transform: translate(0,0); }
+    to { transform: translate(100px,80px); }
+}
+
+/* Navigation */
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(5,8,22,.76);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.navbar {
+    max-width: 1250px;
+    margin: auto;
+    padding: 17px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    font-size: 21px;
+    letter-spacing: -1px;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.logo-icon {
+    color: var(--cyan);
+    margin-right: 7px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 29px;
+}
+
+.nav-links a {
+    font-size: 13px;
+    color: #c4cce1;
+    transition: .3s;
+}
+
+.nav-links a:hover {
+    color: var(--cyan);
+}
+
+.nav-cta {
+    border: 1px solid var(--cyan);
+    border-radius: 7px;
+    padding: 10px 16px;
+    color: var(--cyan) !important;
+}
+
+.nav-cta:hover {
+    background: var(--cyan);
+    color: var(--bg) !important;
+}
+
+.menu-toggle {
+    display: none;
+    color: white;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 7px;
+    padding: 7px 11px;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+/* General layout */
+
+.container {
+    width: min(1150px, 90%);
+    margin: auto;
+}
+
+section {
+    padding: 100px 0;
+    position: relative;
+}
+
+.section-label {
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 4vw, 43px);
+    line-height: 1.3;
+    margin-bottom: 18px;
+}
+
+.section-description {
+    max-width: 660px;
+    color: var(--muted);
+    line-height: 1.9;
+    font-size: 14px;
+}
+
+.center {
+    text-align: center;
+}
+
+.center .section-description {
+    margin: auto;
+}
+
+/* Hero */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 115px;
+    padding-bottom: 65px;
+    overflow: hidden;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.08fr .92fr;
+    align-items: center;
+    gap: 25px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 15px;
+    border: 1px solid rgba(0,245,255,.27);
+    border-radius: 30px;
+    background: rgba(0,245,255,.055);
+    color: #b9fbff;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 14px var(--cyan);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    50% { opacity: .3; transform: scale(.7); }
+}
+
+.hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(36px, 5.2vw, 65px);
+    line-height: 1.2;
+    letter-spacing: -2px;
+    margin-bottom: 25px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--cyan), #8b9bff, #c7a2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-description {
+    max-width: 550px;
+    color: #aeb8d4;
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 32px;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 23px;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 13px;
+    transition: transform .3s, box-shadow .3s, background .3s;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--cyan);
+    color: #06101b;
+    box-shadow: 0 0 25px rgba(0,245,255,.15);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 35px rgba(0,245,255,.35);
+}
+
+.btn-outline {
+    border: 1px solid rgba(255,255,255,.22);
+    color: white;
+    background: rgba(255,255,255,.03);
+}
+
+.btn-outline:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: translateY(-4px);
+}
+
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 38px;
+    margin-top: 48px;
+}
+
+.stat-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.stat-number span {
+    color: var(--cyan);
+}
+
+.stat-label {
+    color: #8f9ab9;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+/* 3D robot area */
+
+.robot-area {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+}
+
+.robot-glow {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(0,245,255,.12);
+    filter: blur(65px);
+}
+
+#robot-canvas {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 470px;
+    cursor: grab;
+}
+
+#robot-canvas:active {
+    cursor: grabbing;
+}
+
+.orbit {
+    position: absolute;
+    width: 320px;
+    height: 110px;
+    border: 1px solid rgba(0,245,255,.35);
+    border-radius: 50%;
+    transform: rotate(-25deg);
+    animation: orbitSpin 14s linear infinite;
+}
+
+.orbit.second {
+    width: 370px;
+    height: 135px;
+    transform: rotate(55deg);
+    border-color: rgba(139,92,246,.35);
+    animation-duration: 20s;
+    animation-direction: reverse;
+}
+
+@keyframes orbitSpin {
+    to { rotate: 360deg; }
+}
+
+.floating-tag {
+    position: absolute;
+    z-index: 3;
+    border: 1px solid rgba(0,245,255,.22);
+    background: rgba(9,17,40,.8);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 11px;
+    color: #d5faff;
+    box-shadow: 0 8px 30px rgba(0,0,0,.2);
+    animation: float 4s ease-in-out infinite;
+}
+
+.floating-tag b {
+    display: block;
+    color: var(--cyan);
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.tag-one {
+    top: 18%;
+    right: 0;
+}
+
+.tag-two {
+    bottom: 17%;
+    left: 0;
+    animation-delay: -2s;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* Trust strip */
+
+.trust-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.018);
+    padding: 27px 0;
+}
+
+.trust-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    color: #a6b1ce;
+    font-size: 12px;
+}
+
+.trust-inner span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trust-inner strong {
+    color: var(--cyan);
+    font-size: 17px;
+}
+
+/* Cards */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 48px;
+}
+
+.glass-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018));
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    transition: transform .35s, border-color .35s, box-shadow .35s;
+    transform-style: preserve-3d;
+}
+
+.glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(0,245,255,.10), transparent 55%);
+    opacity: 0;
+    transition: .4s;
+    pointer-events: none;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0,245,255,.4);
+    box-shadow: 0 20px 50px rgba(0,0,0,.2);
+}
+
+.glass-card:hover::before {
+    opacity: 1;
+}
+
+.card-icon {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 13px;
+    background: rgba(0,245,255,.09);
+    border: 1px solid rgba(0,245,255,.2);
+    color: var(--cyan);
+    font-size: 28px;
+    margin-bottom: 23px;
+}
+
+.glass-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    margin-bottom: 13px;
+    line-height: 1.6;
+}
+
+.glass-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 23px;
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* About */
+
+.about-grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 65px;
+    align-items: center;
+}
+
+.about-visual {
+    position: relative;
+    min-height: 380px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background:
+        linear-gradient(rgba(0,245,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,.025) 1px, transparent 1px),
+        rgba(255,255,255,.018);
+    background-size: 28px 28px;
+    overflow: hidden;
+}
+
+.about-visual::before {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(139,92,246,.18);
+    filter: blur(55px);
+}
+
+.about-emoji {
+    position: relative;
+    font-size: 125px;
+    filter: drop-shadow(0 0 35px rgba(0,245,255,.2));
+    animation: float 4s ease-in-out infinite;
+}
+
+.about-badge {
+    position: absolute;
+    bottom: 22px;
+    right: 22px;
+    padding: 13px 17px;
+    border-radius: 10px;
+    background: rgba(5,8,22,.85);
+    border: 1px solid rgba(0,245,255,.25);
+    font-size: 12px;
+}
+
+.about-badge strong {
+    display: block;
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 5px;
+}
+
+.feature-list {
+    display: grid;
+    gap: 19px;
+    margin-top: 30px;
+}
+
+.feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.feature-check {
+    flex: 0 0 27px;
+    width: 27px;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(0,245,255,.35);
+    background: rgba(0,245,255,.08);
+    border-radius: 50%;
+    color: var(--cyan);
+    font-size: 13px;
+}
+
+.feature h4 {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.feature p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* Projects */
+
+.project-card {
+    padding: 0;
+}
+
+.project-art {
+    min-height: 175px;
+    display: grid;
+    place-items: center;
+    font-size: 75px;
+    background:
+        radial-gradient(circle at center, rgba(0,245,255,.13), transparent 65%),
+        rgba(255,255,255,.02);
+    border-bottom: 1px solid var(--border);
+}
+
+.project-content {
+    padding: 24px;
+}
+
+.project-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--cyan);
+    border: 1px solid rgba(0,245,255,.22);
+    border-radius: 4px;
+    padding: 5px 8px;
+    margin-bottom: 13px;
+    text-transform: uppercase;
+}
+
+/* Process */
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.process-item {
+    position: relative;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+.process-number {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 22px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(0,245,255,.4);
+    border-radius: 50%;
+    color: var(--cyan);
+    background: rgba(0,245,255,.06);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    box-shadow: 0 0 30px rgba(0,245,255,.06);
+}
+
+.process-item h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.process-item p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* CTA */
+
+.cta-box {
+    position: relative;
+    text-align: center;
+    padding: 65px 35px;
+    overflow: hidden;
+    border: 1px solid rgba(0,245,255,.25);
+    border-radius: 22px;
+    background:
+        radial-gradient(ellipse at top, rgba(0,245,255,.11), transparent 65%),
+        linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
+}
+
+.cta-box .section-description {
+    margin: 0 auto 28px;
+}
+
+/* FAQ */
+
+.faq-list {
+    max-width: 800px;
+    margin: 45px auto 0;
+    display: grid;
+    gap: 13px;
+}
+
+details {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.025);
+    border-radius: 10px;
+    padding: 20px 23px;
+}
+
+summary {
+    cursor: pointer;
+    list-style: none;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: "+";
+    color: var(--cyan);
+    font-size: 20px;
+    line-height: 1;
+}
+
+details[open] summary::after {
+    content: "−";
+}
+
+details p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+    padding-top: 15px;
+}
+
+/* Contact */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 45px;
+    margin-top: 45px;
+}
+
+.contact-info {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+}
+
+.contact-item {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: rgba(255,255,255,.025);
+}
+
+.contact-item .card-icon {
+    width: 45px;
+    height: 45px;
+    flex: 0 0 45px;
+    margin: 0;
+    font-size: 20px;
+}
+
+.contact-item h4 {
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.contact-item p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.contact-form {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: rgba(255,255,255,.035);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 8px;
+    color: #c5cde0;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 7px;
+    outline: none;
+    color: white;
+    background: rgba(5,8,22,.7);
+    border: 1px solid rgba(255,255,255,.13);
+    font-size: 12px;
+    transition: border-color .3s;
+}
+
+.form-group select option {
+    background: var(--bg);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--cyan);
+}
+
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.contact-form .btn {
+    border: none;
+    width: 100%;
+}
+
+/* Footer */
+
+footer {
+    border-top: 1px solid var(--border);
+    padding: 35px 0;
+    background: rgba(0,0,0,.18);
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.footer-copy {
+    color: #8290b1;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #aeb8d4;
+    font-size: 11px;
+}
+
+.footer-links a:hover {
+    color: var(--cyan);
+}
+
+/* WhatsApp floating button */
+
+.whatsapp-float {
+    position: fixed;
+    right: 23px;
+    bottom: 23px;
+    z-index: 900;
+    width: 53px;
+    height: 53px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #20c970;
+    color: #06170d;
+    font-size: 25px;
+    box-shadow: 0 5px 25px rgba(32,201,112,.25);
+    transition: transform .3s;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+}
+
+/* Reveal animations */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive */
+
+@media (max-width: 950px) {
+    .nav-links {
+        gap: 17px;
+    }
+
+    .nav-links a {
+        font-size: 11px;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .robot-area {
+        min-height: 400px;
+    }
+
+    #robot-canvas {
+        height: 400px;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-grid {
+        gap: 35px;
+    }
+}
+
+@media (max-width: 760px) {
+    .navbar {
+        padding: 14px 5%;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 22px 5%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: rgba(5,8,22,.98);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 13px 5px;
+        font-size: 13px;
+    }
+
+    .nav-cta {
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    section {
+        padding: 75px 0;
+    }
+
+    .hero {
+        padding-top: 120px;
+        min-height: auto;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons,
+    .hero-stats {
+        justify-content: center;
+    }
+
+    .hero-stats {
+        gap: 25px;
+        margin-top: 35px;
+    }
+
+    .robot-area {
+        min-height: 360px;
+        margin-top: 10px;
+    }
+
+    #robot-canvas {
+        height: 360px;
+    }
+
+    .orbit {
+        width: 270px;
+    }
+
+    .orbit.second {
+        width: 300px;
+    }
+
+    .tag-one {
+        right: 0;
+        top: 12%;
+    }
+
+    .tag-two {
+        left: 0;
+        bottom: 12%;
+    }
+
+    .about-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-visual {
+        min-height: 300px;
+    }
+
+    .about-emoji {
+        font-size: 100px;
+    }
+
+    .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-grid {
+        gap: 25px;
+    }
+
+    .footer-inner {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+        letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+        font-size: 12px;
+    }
+
+    .hero-stats {
+        gap: 18px;
+    }
+
+    .stat-number {
+        font-size: 19px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+    }
+
+    .robot-area {
+        min-height: 310px;
+    }
+
+    #robot-canvas {
+        height: 310px;
+    }
+
+    .floating-tag {
+        padding: 9px 10px;
+        font-size: 9px;
+    }
+
+    .floating-tag b {
+        font-size: 11px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .glass-card {
+        padding: 24px;
+    }
+
+    .process-grid {
+        gap: 8px;
+    }
+
+    .process-item {
+        padding: 20px 8px;
+    }
+
+    .cta-box {
+        padding: 45px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .contact-form {
+        padding: 20px;
+    }
+
+    .trust-inner {
+        gap: 15px;
+        justify-content: center;
+    }
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="scroll-progress"></div>
+
+<!-- Background video: replace this URL with your own video if required -->
+<video id="background-video" autoplay muted loop playsinline
+       poster="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1600&q=80">
+    <source src="https://videos.pexels.com/video-files/3141208/3141208-hd_1920_1080_25fps.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+<div class="ambient one"></div>
+<div class="ambient two"></div>
+
+<!-- Navigation -->
+<header>
+    <nav class="navbar">
+        <a href="#home" class="logo">
+            <span class="logo-icon">◈</span>ROBO<span>SPARK</span>
+        </a>
+
+        <button class="menu-toggle" id="menu-toggle"
+                aria-label="Toggle navigation" aria-expanded="false">
+            ☰
+        </button>
+
+        <div class="nav-links" id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#courses">Courses</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact" class="nav-cta">Get Started ↗</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+<!-- Hero -->
+<section class="hero" id="home">
+    <div class="container hero-grid">
+
+        <div class="hero-content">
+            <div class="eyebrow">
+                <span class="pulse"></span>
+                BUILD THE FUTURE WITH TECHNOLOGY
+            </div>
+
+            <h1>
+                Think Smart.<br>
+                Build <span class="gradient-text">Robots.</span><br>
+                Shape Tomorrow.
+            </h1>
+
+            <p class="hero-description">
+                Discover the exciting world of robotics, coding, artificial
+                intelligence, and automation. Turn your imagination into
+                real-world technology through hands-on learning.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#courses" class="btn btn-primary">
+                    Explore Courses <span>↗</span>
+                </a>
+                <a href="#projects" class="btn btn-outline">
+                    Explore Projects <span>▷</span>
+                </a>
+            </div>
+
+            <!-- Replace these numbers with real academy statistics -->
+            <div class="hero-stats">
+                <div>
+                    <div class="stat-number">10<span>+</span></div>
+                    <div class="stat-label">Learning Modules</div>
+                </div>
+                <div>
+                    <div class="stat-number">20<span>+</span></div>
+                    <div class="stat-label">Project Ideas</div>
+                </div>
+                <div>
+                    <div class="stat-number">100<span>%</span></div>
+                    <div class="stat-label">Hands-on Focus</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Three.js creates the 3D robot here -->
+        <div class="robot-area">
+            <div class="robot-glow"></div>
+            <div class="orbit"></div>
+            <div class="orbit second"></div>
+
+            <canvas id="robot-canvas" aria-label="Animated 3D robot"></canvas>
+
+            <div class="floating-tag tag-one">
+                <b>AI + ROBOTICS</b>
+                Learn by building
+            </div>
+
+            <div class="floating-tag tag-two">
+                <b>FUTURE READY</b>
+                Create something amazing
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Trust strip -->
+<div class="trust-strip">
+    <div class="container trust-inner">
+        <span><strong>✳</strong> Robotics</span>
+        <span><strong>⌘</strong> Coding</span>
+        <span><strong>◎</strong> Artificial Intelligence</span>
+        <span><strong>⚙</strong> Automation</span>
+        <span><strong>◇</strong> Innovation</span>
+    </div>
+</div>
+
+<!-- Courses -->
+<section id="courses">
+    <div class="container">
+
+        <div class="center reveal">
+            <div class="section-label">// What You'll Learn</div>
+            <h2 class="section-title">
+                Explore the <span class="gradient-text">Future</span>
+            </h2>
+            <p class="section-description">
+                Practical learning experiences designed to turn curious minds
+                into confident creators, problem-solvers, and innovators.
+            </p>
+        </div>
+
+        <div class="cards-grid">
+
+            <article class="glass-card reveal">
+                <div class="card-icon">🤖</div>
+                <h3>Robotics Engineering</h3>
+                <p>
+                    Discover robot components, sensors, motors, circuits,
+                    and the fundamentals of building intelligent machines.
+                </p>
+                <a href="#contact" class="card-link">Explore Course ↗</a>
+            </article>
+
+            <article class="glass-card reveal">
+                <div class="card-icon">⌘</div>
+                <h3>Coding & Programming</h3>
+                <p>
+                    Learn programming logic, problem-solving, algorithms,
+                    and how software brings electronic devices to life.
+                </p>
+                <a href="#contact" class="card-link">Explore Course ↗</a>
+            </article>
+
+            <article class="glass-card reveal">
+                <div class="card-icon">◉</div>
+                <h3>Artificial Intelligence</h3>
+                <p>
+                    Explore machine learning concepts, intelligent systems,
+                    computer vision, and real-world AI applications.
+                </p>
+                <a href="#contact" class="card-link">Explore Course ↗</a>
+            </article>
+
+            <article class="glass-card reveal">
+                <div class="card-icon">⚡</div>
+                <h3>Electronics & IoT</h3>
+                <p>
+                    Understand circuits, microcontrollers, connected devices,
+                    and how the Internet of Things works.
+                </p>
+                <a href="#contact" class="card-link">Explore Course ↗</a>
+            </article>
+
+            <article class="glass-card reveal">
+                <div class="card-icon">🚗</div>
+                <h3>Automation & Smart Robots</h3>
+                <p>
+                    Build an understanding of automated systems, obstacle
+                    avoidance, motion control, and sensor-based projects.
+                </p>
+                <a href="#contact" class="card-link">Explore Course ↗</a>
+            </article>
+
+            <article class="glass-card reveal">
+                <div class="card-icon">🧠</div>
+                <h3>Creative STEM Learning</h3>
+                <p>
+                    Combine science, technology, engineering, and mathematics
+                    to design, experiment, test, and improve new ideas.
+                </p>
+                <a href="#contact" class="card-link">Explore Course ↗</a>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- About -->
+<section id="about">
+    <div class="container about-grid">
+
+        <div class="about-visual reveal">
+            <div class="about-emoji">🤖</div>
+            <div class="about-badge">
+                <strong>LEARN. BUILD. INNOVATE.</strong>
+                Technology through experience
+            </div>
+        </div>
+
+        <div class="reveal">
+            <div class="section-label">// About Our Academy</div>
+            <h2 class="section-title">
+                From Curious Minds to <span class="gradient-text">Creators</span>
+            </h2>
+
+            <p class="section-description">
+                At RoboSpark Academy, the goal is to make emerging technology
+                approachable, practical, and exciting. Students explore how
+                things work and learn to turn ideas into working projects.
+            </p>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <div class="feature-check">✓</div>
+                    <div>
+                        <h4>Project-Based Learning</h4>
+                        <p>Learn important concepts by designing and building practical projects.</p>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-check">✓</div>
+                    <div>
+                        <h4>Build Problem-Solving Skills</h4>
+                        <p>Experiment, test your ideas, solve challenges, and improve your designs.</p>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-check">✓</div>
+                    <div>
+                        <h4>Explore Emerging Technology</h4>
+                        <p>Get introduced to robotics, AI, coding, electronics, and automation.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="#contact" class="btn btn-primary" style="margin-top:30px;">
+                Start Your Journey ↗
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+    <div class="container">
+
+        <div class="center reveal">
+            <div class="section-label">// Ideas Become Reality</div>
+            <h2 class="section-title">
+                Projects That <span class="gradient-text">Inspire</span>
+            </h2>
+            <p class="section-description">
+                Explore example projects that introduce important concepts
+                in robotics, electronics, coding, and intelligent systems.
+            </p>
+        </div>
+
+        <div class="cards-grid">
+
+            <article class="glass-card project-card reveal">
+                <div class="project-art">🚘</div>
+                <div class="project-content">
+                    <span class="project-tag">Robotics</span>
+                    <h3>Obstacle Avoiding Robot</h3>
+                    <p>
+                        Discover how sensors and motors work together to help
+                        a robot detect obstacles and change direction.
+                    </p>
+                </div>
+            </article>
+
+            <article class="glass-card project-card reveal">
+                <div class="project-art">🌱</div>
+                <div class="project-content">
+                    <span class="project-tag">IoT & Electronics</span>
+                    <h3>Smart Plant Monitoring</h3>
+                    <p>
+                        Learn how sensors can measure soil moisture and help
+                        monitor the conditions needed by plants.
+                    </p>
+                </div>
+            </article>
+
+            <article class="glass-card project-card reveal">
+                <div class="project-art">🦾</div>
+                <div class="project-content">
+                    <span class="project-tag">Engineering</span>
+                    <h3>Robotic Arm</h3>
+                    <p>
+                        Explore movement, joints, motors, and control systems
+                        by studying a programmable robotic arm.
+                    </p>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section id="learning">
+    <div class="container">
+
+        <div class="center reveal">
+            <div class="section-label">// Your Learning Journey</div>
+            <h2 class="section-title">
+                Learn Through <span class="gradient-text">Action</span>
+            </h2>
+            <p class="section-description">
+                A simple learning journey that connects ideas, experimentation,
+                engineering, and creative problem-solving.
+            </p>
+        </div>
+
+        <div class="process-grid">
+
+            <div class="process-item reveal">
+                <div class="process-number">01</div>
+                <h3>Discover</h3>
+                <p>Explore a technology concept and understand the problem you want to solve.</p>
+            </div>
+
+            <div class="process-item reveal">
+                <div class="process-number">02</div>
+                <h3>Design</h3>
+                <p>Plan your idea, select components, and work out how your project will function.</p>
+            </div>
+
+            <div class="process-item reveal">
+                <div class="process-number">03</div>
+                <h3>Build</h3>
+                <p>Bring the idea to life through coding, assembly, testing, and experimentation.</p>
+            </div>
+
+            <div class="process-item reveal">
+                <div class="process-number">04</div>
+                <h3>Innovate</h3>
+                <p>Improve your project, solve problems, and explore new possibilities.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section>
+    <div class="container">
+        <div class="cta-box reveal">
+            <div class="section-label">// Your Future Starts Here</div>
+            <h2 class="section-title">
+                Ready to Build Something <span class="gradient-text">Amazing?</span>
+            </h2>
+            <p class="section-description">
+                Take the first step into robotics, coding, and future technology.
+                Contact us to learn more about courses and available programs.
+            </p>
+            <a href="#contact" class="btn btn-primary">
+                Enquire Now ↗
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="container">
+
+        <div class="center reveal">
+            <div class="section-label">// Frequently Asked Questions</div>
+            <h2 class="section-title">
+                Got <span class="gradient-text">Questions?</span>
+            </h2>
+        </div>
+
+        <div class="faq-list">
+
+            <details class="reveal">
+                <summary>What can students learn at RoboSpark Academy?</summary>
+                <p>
+                    The example programs on this website cover robotics, coding,
+                    artificial intelligence, electronics, IoT, and STEM projects.
+                    Contact the academy to confirm the actual courses offered.
+                </p>
+            </details>
+
+            <details class="reveal">
+                <summary>Do students need previous coding experience?</summary>
+                <p>
+                    Many technology topics can be introduced to beginners.
+                    The suitable starting point depends on the student's age,
+                    interests, and the program requirements.
+                </p>
+            </details>
+
+            <details class="reveal">
+                <summary>Will students build practical projects?</summary>
+                <p>
+                    The website showcases examples of hands-on project learning.
+                    Contact the academy to find out which projects and equipment
+                    are included in its actual programs.
+                </p>
+            </details>
+
+            <details class="reveal">
+                <summary>How can I enquire about courses?</summary>
+                <p>
+                    Use the contact form below. Once you configure the WhatsApp
+                    number in the HTML, the form can open WhatsApp with your
+                    enquiry ready to send.
+                </p>
+            </details>
+
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+    <div class="container">
+
+        <div class="center reveal">
+            <div class="section-label">// Let's Connect</div>
+            <h2 class="section-title">
+                Start Your <span class="gradient-text">Journey</span>
+            </h2>
+            <p class="section-description">
+                Interested in learning robotics and technology?
+                Send an enquiry and connect with us.
+            </p>
+        </div>
+
+        <div class="contact-grid">
+
+            <div class="contact-info reveal">
+
+                <div class="contact-item">
+                    <div class="card-icon">✉</div>
+                    <div>
+                        <h4>Email Us</h4>
+                        <!-- Replace with your real email -->
+                        <p>hello@youracademy.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="card-icon">⌖</div>
+                    <div>
+                        <h4>Visit Our Academy</h4>
+                        <!-- Replace with your actual address -->
+                        <p>Your Academy Address, Your City, India</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="card-icon">◷</div>
+                    <div>
+                        <h4>Course Enquiries</h4>
+                        <p>Contact us for course details, timings, and program availability.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <form class="contact-form reveal" id="contact-form">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input id="name" name="name" type="text"
+                               placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input id="phone" name="phone" type="tel"
+                               placeholder="Enter phone number" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Interested Course *</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select a course</option>
+                        <option>Robotics Engineering</option>
+                        <option>Coding & Programming</option>
+                        <option>Artificial Intelligence</option>
+                        <option>Electronics & IoT</option>
+                        <option>Automation & Smart Robots</option>
+                        <option>Creative STEM Learning</option>
+                        <option>Other Enquiry</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message"
+                              placeholder="Tell us what you would like to learn..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Send Enquiry via WhatsApp ↗
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="container footer-inner">
+
+        <div>
+            <a href="#home" class="logo">
+                <span class="logo-icon">◈</span>ROBO<span>SPARK</span>
+            </a>
+            <p class="footer-copy" style="margin-top:10px;">
+                Building tomorrow's innovators, one idea at a time.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#courses">Courses</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <p class="footer-copy">
+            © <span id="year"></span> RoboSpark Academy.
+            All rights reserved.
+        </p>
+
+    </div>
+</footer>
+
+<!-- Replace the phone number in the JavaScript before publishing -->
+<a href="https://wa.me/919876543210"
+   class="whatsapp-float"
+   id="whatsapp-link"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Contact us on WhatsApp">
+    ☎
+</a>
+
+<script>
+/* =========================================
+   WEBSITE CONFIGURATION
+   Update these values before publishing.
+========================================= */
+
+const CONFIG = {
+    // International format: country code + phone number.
+    // Do not include +, spaces, or dashes.
+    whatsappNumber: "919876543210"
+};
+
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+const menuToggle = document.getElementById("menu-toggle");
+const navLinks = document.getElementById("nav-links");
+
+menuToggle.addEventListener("click", () => {
+    const isOpen = navLinks.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.textContent = isOpen ? "✕" : "☰";
+});
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.textContent = "☰";
+    });
+});
+
+/* =========================================
+   SCROLL PROGRESS
+========================================= */
+
+function updateScrollProgress() {
+    const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+    const progress = scrollable > 0
+        ? (window.scrollY / scrollable) * 100
+        : 0;
+
+    document.getElementById("scroll-progress").style.width =
+        progress + "%";
+}
+
+window.addEventListener("scroll", updateScrollProgress, {
+    passive: true
+});
+
+updateScrollProgress();
+
+/* =========================================
+   SCROLL REVEAL ANIMATION
+========================================= */
+
+const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.12
+});
+
+document.querySelectorAll(".reveal").forEach(element => {
+    revealObserver.observe(element);
+});
+
+/* =========================================
+   CURRENT YEAR
+========================================= */
+
+document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+/* =========================================
+   WHATSAPP CONTACT FORM
+========================================= */
+
+document.getElementById("contact-form").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const course = document.getElementById("course").value;
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !phone || !course) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    if (!/^[0-9+\-\s()]{7,20}$/.test(phone)) {
+        alert("Please enter a valid phone number.");
+        return;
+    }
+
+    if (!/^\d{8,15}$/.test(CONFIG.whatsappNumber)) {
+        alert("Please configure the academy's WhatsApp number in the HTML.");
+        return;
+    }
+
+    const text = [
+        "Hello RoboSpark Academy!",
+        "",
+        "I would like to enquire about your courses.",
+        "",
+        "Name: " + name,
+        "Phone: " + phone,
+        "Interested Course: " + course,
+        "Message: " + (message || "No additional message")
+    ].join("\n");
+
+    const whatsappURL =
+        "https://wa.me/" + CONFIG.whatsappNumber +
+        "?text=" + encodeURIComponent(text);
+
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
+});
+
+/* =========================================
+   WHATSAPP FLOATING BUTTON
+========================================= */
+
+document.getElementById("whatsapp-link").addEventListener("click", event => {
+    if (!/^\d{8,15}$/.test(CONFIG.whatsappNumber)) {
+        event.preventDefault();
+        alert("Please configure the academy's WhatsApp number in the HTML.");
+        return;
+    }
+
+    event.currentTarget.href =
+        "https://wa.me/" + CONFIG.whatsappNumber;
+});
+
+/* =========================================
+   SUBTLE 3D CARD TILT
+========================================= */
+
+const canTilt = window.matchMedia(
+    "(hover: hover) and (pointer: fine)"
+).matches;
+
+if (canTilt) {
+    document.querySelectorAll(".glass-card").forEach(card => {
+        card.addEventListener("mousemove", event => {
+            const rect = card.getBoundingClientRect();
+
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = (event.clientY - rect.top) / rect.height;
+
+            const rotateY = (x - 0.5) * 5;
+            const rotateX = (0.5 - y) * 5;
+
+            card.style.transform =
+                `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+            card.style.transform = "";
+        });
+    });
+}
+
+/* =========================================
+   THREE.JS 3D ROBOT
+========================================= */
+
+(function initRobot() {
+    const canvas = document.getElementById("robot-canvas");
+
+    // If Three.js fails to load, the rest of the site still works.
+    if (!window.THREE || !canvas) return;
+
+    let renderer;
+
+    try {
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true,
+            antialias: true
+        });
+    } catch (error) {
+        console.warn("3D animation could not be initialized.", error);
+        return;
+    }
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+    camera.position.set(0, 0.15, 7.5);
+
+    const robot = new THREE.Group();
+    scene.add(robot);
+
+    // Materials
+    const bodyMaterial = new THREE.MeshStandardMaterial({
+        color: 0x172b4d,
+        metalness: 0.85,
+        roughness: 0.24
+    });
+
+    const lightMaterial = new THREE.MeshStandardMaterial({
+        color: 0x00dce8,
+        metalness: 0.65,
+        roughness: 0.2,
+        emissive: 0x004c59,
+        emissiveIntensity: 1.4
+    });
+
+    const darkMaterial = new THREE.MeshStandardMaterial({
+        color: 0x08111f,
+        metalness: 0.75,
+        roughness: 0.32
+    });
+
+    const eyeMaterial = new THREE.MeshStandardMaterial({
+        color: 0x8cffff,
+        emissive: 0x00dfff,
+        emissiveIntensity: 3
+    });
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0x8aaaff, 1.5));
+
+    const keyLight = new THREE.PointLight(0x00f5ff, 3, 20);
+    keyLight.position.set(3, 4, 5);
+    scene.add(keyLight);
+
+    const purpleLight = new THREE.PointLight(0x8b5cf6, 3, 20);
+    purpleLight.position.set(-4, 1, 3);
+    scene.add(purpleLight);
+
+    const frontLight = new THREE.PointLight(0xffffff, 1.5, 20);
+    frontLight.position.set(0, -2, 5);
+    scene.add(frontLight);
+
+    // Head
+    const head = new THREE.Mesh(
+        new THREE.BoxGeometry(1.55, 1.25, 1.05),
+        bodyMaterial
+    );
+
+    head.position.y = 1.05;
+    robot.add(head);
+
+    // Head frame
+    const headEdges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.BoxGeometry(1.58, 1.28, 1.08)),
+        new THREE.LineBasicMaterial({
+            color: 0x00f5ff,
+            transparent: true,
+            opacity: 0.75
+        })
+    );
+
+    headEdges.position.copy(head.position);
+    robot.add(headEdges);
+
+    // Face plate
+    const face = new THREE.Mesh(
+        new THREE.BoxGeometry(1.22, 0.62, 0.09),
+        darkMaterial
+    );
+
+    face.position.set(0, 1.04, 0.55);
+    robot.add(face);
+
+    // Eyes
+    const eyeGeometry = new THREE.SphereGeometry(0.105, 20, 20);
+
+    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    leftEye.position.set(-0.3, 1.08, 0.625);
+    robot.add(leftEye);
+
+    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    rightEye.position.set(0.3, 1.08, 0.625);
+    robot.add(rightEye);
+
+    // Mouth
+    const mouth = new THREE.Mesh(
+        new THREE.BoxGeometry(0.3, 0.035, 0.04),
+        lightMaterial
+    );
+
+    mouth.position.set(0, 0.82, 0.62);
+    robot.add(mouth);
+
+    // Antenna
+    const antennaStem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.035, 0.05, 0.38, 12),
+        lightMaterial
+    );
+
+    antennaStem.position.set(0, 1.86, 0);
+    robot.add(antennaStem);
+
+    const antennaBall = new THREE.Mesh(
+        new THREE.SphereGeometry(0.11, 18, 18),
+        eyeMaterial
+    );
+
+    antennaBall.position.set(0, 2.08, 0);
+    robot.add(antennaBall);
+
+    // Neck
+    const neck = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.28, 0.3, 16),
+        darkMaterial
+    );
+
+    neck.position.y = 0.27;
+    robot.add(neck);
+
+    // Torso
+    const torso = new THREE.Mesh(
+        new THREE.BoxGeometry(1.55, 1.25, 0.82),
+        bodyMaterial
+    );
+
+    torso.position.y = -0.48;
+    robot.add(torso);
+
+    // Chest panel
+    const chest = new THREE.Mesh(
+        new THREE.BoxGeometry(0.8, 0.53, 0.08),
+        darkMaterial
+    );
+
+    chest.position.set(0, -0.43, 0.45);
+    robot.add(chest);
+
+    // Chest lights
+    for (let i = 0; i < 3; i++) {
+        const bar = new THREE.Mesh(
+            new THREE.BoxGeometry(0.48, 0.045, 0.035),
+            lightMaterial
+        );
+
+        bar.position.set(0, -0.27 - i * 0.15, 0.51);
+        robot.add(bar);
+    }
+
+    // Shoulders and arms
+    const shoulderGeometry = new THREE.SphereGeometry(0.25, 20, 20);
+    const upperArmGeometry = new THREE.CylinderGeometry(0.14, 0.18, 0.62, 16);
+    const handGeometry = new THREE.SphereGeometry(0.17, 18, 18);
+
+    const armPivots = [];
+
+    [-1, 1].forEach(side => {
+        const shoulder = new THREE.Mesh(shoulderGeometry, lightMaterial);
+        shoulder.position.set(side * 0.92, -0.08, 0);
+        robot.add(shoulder);
+
+        const pivot = new THREE.Group();
+        pivot.position.set(side * 1.0, -0.14, 0);
+        robot.add(pivot);
+
+        const upperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial);
+        upperArm.position.y = -0.34;
+        pivot.add(upperArm);
+
+        const elbow = new THREE.Mesh(
+            new THREE.SphereGeometry(0.17, 16, 16),
+            darkMaterial
+        );
+
+        elbow.position.y = -0.67;
+        pivot.add(elbow);
+
+        const hand = new THREE.Mesh(handGeometry, lightMaterial);
+        hand.position.y = -0.88;
+        pivot.add(hand);
+
+        armPivots.push({ pivot, side });
+    });
+
+    // Waist
+    const waist = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 0.25, 0.6),
+        darkMaterial
+    );
+
+    waist.position.y = -1.22;
+    robot.add(waist);
+
+    // Legs
+    const legGeometry = new THREE.CylinderGeometry(0.17, 0.22, 0.55, 16);
+
+    [-1, 1].forEach(side => {
+        const leg = new THREE.Mesh(legGeometry, bodyMaterial);
+        leg.position.set(side * 0.3, -1.62, 0);
+        robot.add(leg);
+
+        const foot = new THREE.Mesh(
+            new THREE.BoxGeometry(0.42, 0.2, 0.62),
+            lightMaterial
+        );
+
+        foot.position.set(side * 0.3, -1.98, 0.1);
+        robot.add(foot);
+    });
+
+    // Floating data particles
+    const particleCount = 180;
+    const particlePositions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount; i++) {
+        particlePositions[i * 3] = (Math.random() - 0.5) * 7;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 6;
+        particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 3 - 1;
+    }
+
+    const particleGeometry = new THREE.BufferGeometry();
+
+    particleGeometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(particlePositions, 3)
+    );
+
+    const particleMaterial = new THREE.PointsMaterial({
+        color: 0x00f5ff,
+        size: 0.025,
+        transparent: true,
+        opacity: 0.65
+    });
+
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    // Responsive sizing
+    function resizeRenderer() {
+        const width = canvas.clientWidth || 400;
+        const height = canvas.clientHeight || 400;
+
+        renderer.setSize(width, height, false);
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    }
+
+    resizeRenderer();
+
+    window.addEventListener("resize", resizeRenderer);
+
+    // Pointer interaction
+    let pointerX = 0;
+    let pointerY = 0;
+
+    canvas.addEventListener("pointermove", event => {
+        const rect = canvas.getBoundingClientRect();
+
+        pointerX = ((event.clientX - rect.left) / rect.width - 0.5) * 0.6;
+        pointerY = ((event.clientY - rect.top) / rect.height - 0.5) * 0.35;
+    });
+
+    canvas.addEventListener("pointerleave", () => {
+        pointerX = 0;
+        pointerY = 0;
+    });
+
+    // Animation loop
+    const clock = new THREE.Clock();
+
+    let animationFrame;
+    let isPageVisible = !document.hidden;
+
+    document.addEventListener("visibilitychange", () => {
+        isPageVisible = !document.hidden;
+
+        if (isPageVisible && !animationFrame) {
+            animate();
+        }
+    });
+
+    function animate() {
+        if (!isPageVisible) {
+            animationFrame = null;
+            return;
+        }
+
+        animationFrame = requestAnimationFrame(animate);
+
+        const time = clock.getElapsedTime();
+
+        robot.position.y = Math.sin(time * 1.5) * 0.09;
+        robot.rotation.y += (pointerX * 0.5 - robot.rotation.y) * 0.035;
+        robot.rotation.x += (-pointerY * 0.35 - robot.rotation.x) * 0.035;
+
+        antennaBall.scale.setScalar(1 + Math.sin(time * 4) * 0.12);
+
+        armPivots.forEach(({ pivot, side }) => {
+            pivot.rotation.z =
+                side * (0.12 + Math.sin(time * 1.4) * 0.09);
+        });
+
+        particles.rotation.y = time * 0.025;
+        particles.rotation.x = Math.sin(time * 0.2) * 0.04;
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+})();
+</script>
+
+</body>
+</html>
+```
